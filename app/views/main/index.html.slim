@@ -1,0 +1,7 @@
+h1 Сапер
+= simple_form_for :games, url: games_path, method: :post do |f|
+  = f.input :username
+  = f.input :bombs_count
+  = f.input :fields_height
+  = f.input :fields_width
+  = f.submit 'Сохранить'
