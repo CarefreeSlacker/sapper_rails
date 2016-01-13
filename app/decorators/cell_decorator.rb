@@ -21,5 +21,8 @@ class CellDecorator < Draper::Decorator
 
   def cell_picture
     return value if open? && value > 0
+    unless open?
+      h.link_to('0', "/check_cells?id=#{self.id}", method: :post)
+    end
   end
 end
