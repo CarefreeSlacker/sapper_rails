@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="PostgreSQL - sapper_rails_development" uuid="ca950485-c665-4ff8-b519-7d135c210801">
+      <secret-storage>master_key</secret-storage>
+      <first-sync>true</first-sync>
+      <user-name>carefreeslacker</user-name>
+    </data-source>
+  </component>
+</project>
