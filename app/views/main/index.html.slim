@@ -1,7 +1,19 @@
 h1 Сапер
-= simple_form_for :games, url: games_path, method: :post do |f|
+= simple_form_for :new_game, url: games_path, method: :post do |f|
   = f.input :username
   = f.input :bombs_count
   = f.input :fields_height
   = f.input :fields_width
   = f.submit 'Сохранить'
+hr
+- if @games.any?
+  h2 История Игр.
+  table.games
+    tr
+      th Пользователь
+      th Статус
+      th Полей открыто
+      th Ссылка на игру.
+    = render partial: 'main/game', collection: @games
+
+  = will_paginate @games

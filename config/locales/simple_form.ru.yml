@@ -9,7 +9,7 @@ ru:
       # When using html, text and mark won't be used.
       # html: '<abbr title="required">*</abbr>'
     labels:
-      games:
+      new_game:
         username: 'Имя пользователя'
         bombs_count: 'Количество бомб'
         fields_height: 'Высота поля'

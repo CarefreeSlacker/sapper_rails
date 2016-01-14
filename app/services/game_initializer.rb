@@ -1,4 +1,5 @@
 class GameInitializer
+  include ApplicationHelper
   attr_reader :game
 
   def initialize(game:)
@@ -8,7 +9,7 @@ class GameInitializer
   def perform
     initialize_game
     mine_bombs
-    make_empty_fields
+    fill_empty_fields
   end
 
   private
@@ -42,7 +43,7 @@ class GameInitializer
     end
   end
 
-  def make_empty_fields
+  def fill_empty_fields
     cells.where(value: 0).each{ |cell| cell.update(value: count_bombs_for(cell)) }
   end
 
@@ -56,12 +57,10 @@ class GameInitializer
 
   def count_bombs_for(cell)
     bombs_count = 0
-    [-1, 0, 1].each do |x|
-      [-1, 0, 1].each do |y|
-        count_cell = cells.find_by(x: cell.x + x, y: cell.y + y)
-        next unless count_cell && count_cell.value == -1
-        bombs_count += 1
-      end
+    run_on_near_cells do |x,y|
+      count_cell = cells.find_by(x: cell.x + x, y: cell.y + y)
+      next unless count_cell && count_cell.value == -1
+      bombs_count += 1
     end
     bombs_count
   end
