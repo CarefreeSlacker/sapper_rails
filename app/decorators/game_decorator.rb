@@ -14,4 +14,20 @@ class GameDecorator < Draper::Decorator
     result << '</table>'
     result.join('').html_safe
   end
+
+  def status_class
+    case lost
+    when true; 'game_lost'
+    when false; 'game_won'
+    when nil; 'still_playing'
+    end
+  end
+
+  def status_message
+    case lost
+    when true; 'Игра роиграна'
+    when false; 'Игра Выиграна'
+    when nil; 'Игра продолжается'
+    end
+  end
 end

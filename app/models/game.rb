@@ -8,4 +8,24 @@ class Game < ActiveRecord::Base
   validates :bombs_count, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: MAXIMUM_BOMBS_COUNT }
   validates :fields_height, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: MAXIMUM_SIZE }
   validates :fields_width, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: MAXIMUM_SIZE }
+
+  def safety_cells
+    Rails.cache.fetch(self) do
+      (fields_height * fields_width) - bombs_count
+    end
+  end
+
+  def finished?
+    cells.where(open: true).count == safety_cells
+  end
+
+  def win
+    update(lost: false)
+    cells.update_all(open: true)
+  end
+
+  def loose
+    update(lost: true)
+    cells.update_all(open: true)
+  end
 end

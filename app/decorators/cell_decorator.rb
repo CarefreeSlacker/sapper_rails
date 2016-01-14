@@ -2,7 +2,7 @@ class CellDecorator < Draper::Decorator
   delegate_all
 
   def for_grid
-    "<td class=\"table_cell #{cell_class}\">#{cell_picture}</td>"
+    "<td class=\"table_cell #{cell_class}\" cell-id=#{id}>#{cell_picture}</td>"
   end
 
   private
@@ -21,8 +21,5 @@ class CellDecorator < Draper::Decorator
 
   def cell_picture
     return value if open? && value > 0
-    unless open?
-      h.link_to('0', "/check_cells?id=#{self.id}", method: :post)
-    end
   end
 end

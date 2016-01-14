@@ -1,1 +1,8 @@
-= @game.decorate.make_grid
+table.status
+  tr
+    td = "#{@game.username}"
+    td class="game_status #{@game.decorate.status_class}" = "#{@game.decorate.status_message}"
+    td = link_to 'На главную', root_path
+hr
+#field game-id=params[:id]
+  = @game.decorate.make_grid

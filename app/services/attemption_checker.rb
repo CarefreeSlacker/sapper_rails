@@ -1,5 +1,5 @@
 class AttemptionChecker
-  attr_reader :cell
+  attr_reader :cell, :result
 
   def initialize(cell:)
     @cell = cell
@@ -10,30 +10,59 @@ class AttemptionChecker
     check_attemption
   end
 
+  def game
+    cell.game
+  end
+
+  def all_cells
+    game.cells
+  end
+
   private
 
   def check_attemption
+    game_over = nil
+
     if cell.value == -1
-      cell.game.update(lost: true)
+      game.loose
+      game_over = true
     end
 
     if cell.value == 0
       open_empty_near_cells_for(cell)
     end
+
+    if game.finished?
+      game.win
+      game_over = true
+    end
+
+    if game_over
+      @result = { new_status: game.decorate.status_class, new_message: game.decorate.status_message }
+    else
+      @result = { still_playing: true }
+    end
   end
 
-  # infinite loop here
   def open_empty_near_cells_for(cell)
-    cell.update(open: true)
+    make_wave(cell, 0)
+    remove_waves
+  end
+
+  def make_wave(cell, number)
+    return unless cell.wave_number.nil?
+    cell.update(open: true, wave_number: number)
     return if cell.value > 0
     [-1, 0, 1].each do |x|
       [-1, 0, 1].each do |y|
         next if x == 0 && y == 0
-        opened_cell = cell.game.cells.find_by(x: cell.x + x, y: cell.y + y)
-        if opened_cell
-          open_empty_near_cells_for(opened_cell)
-        end
+        opened_cell = all_cells.find_by(x: cell.x + x, y: cell.y + y)
+        make_wave(opened_cell, number + 1) if opened_cell
       end
     end
+  end
+
+  def remove_waves
+    all_cells.update_all(wave_number: nil)
   end
 end

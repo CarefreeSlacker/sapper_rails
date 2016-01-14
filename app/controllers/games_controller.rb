@@ -11,6 +11,10 @@ class GamesController < ApplicationController
   end
 
   def edit
+    respond_to do |format|
+      format.text { render text: @game.decorate.make_grid }
+      format.html
+    end
   end
 
   private
