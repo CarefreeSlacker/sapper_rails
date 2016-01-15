@@ -29,6 +29,9 @@ gem 'slim-rails'
 gem 'draper'
 gem 'pry', :group => :development
 gem 'will_paginate', '~> 3.0.6'
+
+gem 'react-rails', '~> 1.5.0'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
