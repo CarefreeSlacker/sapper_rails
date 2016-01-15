@@ -20,7 +20,7 @@ class GamesController < ApplicationController
   private
 
   def game_attributes
-    params.require(:games).permit(:username, :bombs_count, :fields_height, :fields_width)
+    params.require(:new_game).permit(:username, :bombs_count, :fields_height, :fields_width)
   end
 
   def set_game

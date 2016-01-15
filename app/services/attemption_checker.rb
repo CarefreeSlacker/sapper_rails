@@ -1,4 +1,6 @@
 class AttemptionChecker
+  include ApplicationHelper
+
   attr_reader :cell, :result
 
   def initialize(cell:)
@@ -10,6 +12,8 @@ class AttemptionChecker
     check_attemption
   end
 
+  private
+
   def game
     cell.game
   end
@@ -18,18 +22,16 @@ class AttemptionChecker
     game.cells
   end
 
-  private
-
   def check_attemption
     game_over = nil
+
+    if cell.value == 0
+      open_empty_near_cells_for(cell)
+    end
 
     if cell.value == -1
       game.loose
       game_over = true
-    end
-
-    if cell.value == 0
-      open_empty_near_cells_for(cell)
     end
 
     if game.finished?
@@ -53,12 +55,9 @@ class AttemptionChecker
     return unless cell.wave_number.nil?
     cell.update(open: true, wave_number: number)
     return if cell.value > 0
-    [-1, 0, 1].each do |x|
-      [-1, 0, 1].each do |y|
-        next if x == 0 && y == 0
-        opened_cell = all_cells.find_by(x: cell.x + x, y: cell.y + y)
-        make_wave(opened_cell, number + 1) if opened_cell
-      end
+    run_on_near_cells do |x,y|
+      opened_cell = all_cells.find_by(x: cell.x + x, y: cell.y + y)
+      make_wave(opened_cell, number + 1) if opened_cell
     end
   end
 

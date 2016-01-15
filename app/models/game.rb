@@ -9,14 +9,16 @@ class Game < ActiveRecord::Base
   validates :fields_height, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: MAXIMUM_SIZE }
   validates :fields_width, numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: MAXIMUM_SIZE }
 
-  def safety_cells
+  self.per_page = 10
+
+  def safety_cells_count
     Rails.cache.fetch(self) do
       (fields_height * fields_width) - bombs_count
     end
   end
 
   def finished?
-    cells.where(open: true).count == safety_cells
+    cells.where(open: true).count == safety_cells_count
   end
 
   def win

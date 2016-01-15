@@ -1,0 +1,5 @@
+tr
+  td = game.username
+  td class="game_status #{game.decorate.status_class}" = "#{game.decorate.status_message}"
+  td = game.decorate.opened_cells
+  td = link_to 'Го', edit_game_path(game)

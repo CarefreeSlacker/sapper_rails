@@ -30,4 +30,8 @@ class GameDecorator < Draper::Decorator
     when nil; 'Игра продолжается'
     end
   end
+
+  def opened_cells
+    "#{cells.where.not(value: -1).where(open: true).count} / #{safety_cells_count}"
+  end
 end
