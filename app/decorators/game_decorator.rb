@@ -34,4 +34,13 @@ class GameDecorator < Draper::Decorator
   def opened_cells
     "#{cells.where.not(value: -1).where(open: true).count} / #{safety_cells_count}"
   end
+
+  def cells_data
+    cells.order(:x, :y).decorate.map do |cell|
+      [
+        cell.cell_class,
+        cell.cell_picture
+      ]
+    end.each_slice(fields_width).to_a
+  end
 end

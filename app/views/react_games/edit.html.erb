@@ -1,6 +1,6 @@
 <h2>Реакт велик </h2>
 <div id="sapper"></div>
 <script type="text/babel">
-  ReactDOM.render(<GameField fields_height={ <%= @game.fields_height %> } fields_width={ <%= @game.fields_width %> }/>, document.getElementById('sapper'));
+  ReactDOM.render(<GameField cells={ <%= @game.decorate.cells_data %> } fields_height={ <%= @game.fields_height %> } fields_width={ <%= @game.fields_width %> }/>, document.getElementById('sapper'));
 </script>
 

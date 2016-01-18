@@ -5,8 +5,6 @@ class CellDecorator < Draper::Decorator
     "<td class=\"table_cell #{cell_class}\" cell-id=#{id}>#{cell_picture}</td>"
   end
 
-  private
-
   def cell_class
     return 'closed' unless open?
     case value

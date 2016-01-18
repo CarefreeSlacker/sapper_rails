@@ -1,21 +1,18 @@
 var GameField = React.createClass({
-  create_row: function() {
+  create_row: function(y) {
       var result = [];
-      for(var i = 0; i < this.props.fields_width; i++){
-          result.push(this.create_cell());
+      for(var x = 0; x < this.props.fields_width; x++){
+          result.push(this.create_cell(x, y));
       }
-      return <tr>{ result }</tr>;
+      return <tr y={ y }> { result } </tr>;
   },
-  create_cell: function() {
-      return <td>Win!</td>
-      /* <td class={ this.props.class } cell-id={ this.props.id }>
-          { this.props.cell_picture }
-      </td>; */
+  create_cell: function(x, y) {
+      return <td x={ x } y={ y }>{ this.props.cells[x][y][1] }</td>
   },
   render: function() {
       var result = [];
-      for(var i = 0; i < this.props.fields_height; i++){
-          result.push(this.create_row());
+      for(var y = 0; y < this.props.fields_height; y++){
+          result.push(this.create_row(y));
       }
       return <table> { result } </table>;
   }
