@@ -36,11 +36,6 @@ class GameDecorator < Draper::Decorator
   end
 
   def cells_data
-    cells.order(:x, :y).decorate.map do |cell|
-      [
-        cell.cell_class,
-        cell.cell_picture
-      ]
-    end.each_slice(fields_width).to_a
+    cells.order(:x, :y).pluck(:open, :value, :id).each_slice(fields_width).to_a
   end
 end
