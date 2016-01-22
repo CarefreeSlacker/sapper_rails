@@ -19,7 +19,7 @@ default: &default
   encoding: unicode
   pool: 5
   username: carefreeslacker
-  password: stoege
+  password: j0k$er
   host: localhost
 
 development:
