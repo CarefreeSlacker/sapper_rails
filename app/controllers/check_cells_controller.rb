@@ -4,7 +4,7 @@ class CheckCellsController < ApplicationController
   def create
     @attemption_checker.perform
     respond_to do |format|
-      format.json { render json: @attemption_checker.result }
+      format.json { render json: { cells: @cell.game.decorate.cells_data } }
     end
   end
 

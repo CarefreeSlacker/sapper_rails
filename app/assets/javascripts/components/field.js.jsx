@@ -5,66 +5,56 @@ var GameField = React.createClass({
           var cell_opened = this.props.cells[x][y][0];
           var cell_value = this.props.cells[x][y][1];
           var cell_id = this.props.cells[x][y][2];
-          result.push(React.createElement(GameField.Cell, { x: x,
-                                                            y: y,
-                                                            opened: cell_opened,
-                                                            cell_id: cell_id,
-                                                            value: cell_value,
-                                                            onClick: this.handleClick.bind(this, cell_id),
-                                                            key: cell_id }));
+          result.push(this.create_cell({ x: x,
+                                         y: y,
+                                         opened: cell_opened,
+                                         cell_id: cell_id,
+                                         value: cell_value }));
       }
       return <tr y={ y }> { result } </tr>;
   },
   handleClick: function(cell_id){
-      $.ajax({
+      $.post({
           url: '/check_cells?id=' + cell_id,
-          method: 'POST',
-          dataType: 'json'
-      });
-      console.log('click has been handled');
-      this.render();
+          dataType: 'json' });
+      // table does not refreshed after sending POST request
+  },
+  get_cell_style: function(cell_properties) {
+      var cell_style = 'table_cell ';
+      if(cell_properties.opened)
+      {
+          switch(cell_properties.value){
+              case -1: cell_style += 'bomb'
+                  break;
+              case 0: cell_style += 'empty'
+                  break;
+              default: cell_style += 'numbers'
+          }
+      }
+      else
+      {
+          cell_style += 'closed'
+      }
+      return cell_style;
+  },
+  get_cell_picture: function(cell_properties) {
+      if(cell_properties.opened && cell_properties.value > 0){
+          return cell_properties.value;
+      }else{
+          return '';
+      }
+  },
+  create_cell: function(cell_properties){
+      return <td className={ this.get_cell_style(cell_properties) }
+                 key={ cell_properties.cell_id }
+                 onClick={ this.handleClick.bind(this, cell_properties.cell_id) }>{ this.get_cell_picture(cell_properties) }</td>;
   },
   render: function() {
       var result = [];
       for(var y = 0; y < this.props.fields_height; y++){
           result.push(this.create_row(y));
       }
-      return <table class="sapper" style={{ borderColor: '#000000', borderCollapse: 'collapse' }}> { result } </table>;
+      return <table className="sapper"> { result } </table>;
   }
 });
-
-GameField.Cell = React.createClass({
-    get_cell_picture: function() {
-        if(this.props.opened && this.props.value > 0){
-            return this.props.value;
-        }else{stream
-            return '';
-        }
-    },
-    get_cell_style: function(cell_opened, cell_value) {
-        var cell_style = {
-            height: '40px',
-            width: '40px',
-            border: '1px solid black',
-            textAlign: 'center'
-        }
-        if(this.props.opened)
-        {
-            switch(this.props.value){
-                case -1: cell_style.backgroundColor = '#730E15'
-                    break;
-                case 0: cell_style.backgroundColor = '#ffffff'
-                    break;
-                default: cell_style.backgroundColor = '#aaaaaa'
-            }
-        }
-        else
-        {
-            cell_style.backgroundColor ='#555555'
-        }
-        return cell_style;
-    },
-    render: function(){
-        return <td style={ this.get_cell_style() } key={ this.props.key }>{ this.get_cell_picture() }</td>;
-    }})
 
